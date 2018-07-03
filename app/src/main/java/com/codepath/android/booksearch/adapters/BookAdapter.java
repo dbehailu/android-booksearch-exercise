@@ -1,6 +1,7 @@
 package com.codepath.android.booksearch.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.codepath.android.booksearch.GlideApp;
-import com.codepath.android.booksearch.MyAppGlideModule;
 import com.codepath.android.booksearch.R;
+import com.codepath.android.booksearch.activities.BookDetailActivity;
 import com.codepath.android.booksearch.models.Book;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +23,15 @@ import java.util.List;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<Book> mBooks;
     private Context mContext;
+    public RecyclerView rvRecycle;
+
 
     // View lookup cache
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivCover;
         public TextView tvTitle;
         public TextView tvAuthor;
+        private Context context;
 
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
@@ -36,7 +41,33 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             ivCover = (ImageView)itemView.findViewById(R.id.ivBookCover);
             tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
             tvAuthor = (TextView)itemView.findViewById(R.id.tvAuthor);
+            rvRecycle = (RecyclerView) itemView.findViewById(R.id.rvBooks);
+
+            this.context = getContext();
+            itemView.setOnClickListener(this);
+
         }
+
+        // Handles the row being being clicked
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition(); // gets item position
+
+            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                Book book = mBooks.get(position);
+                // We can access the data within the views
+//                Toast.makeText(context, tvTitle.getText(), Toast.LENGTH_SHORT).show();
+                launchBookDetails(book);
+            }
+        }
+
+    }
+
+    public void launchBookDetails(Book book) {
+        Intent i = new Intent(mContext, BookDetailActivity.class);
+        i.putExtra(Book.class.getSimpleName(), Parcels.wrap(book));
+        mContext.startActivity(i);
+        //Toast.makeText(mContext, "Works", Toast.LENGTH_SHORT).show();
     }
 
     public BookAdapter(Context context, ArrayList<Book> aBooks) {
@@ -64,6 +95,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     public void onBindViewHolder(BookAdapter.ViewHolder viewHolder, int position) {
         // Get the data model based on position
         Book book = mBooks.get(position);
+
+
 
         // Populate data into the template view using the data object
         viewHolder.tvTitle.setText(book.getTitle());
