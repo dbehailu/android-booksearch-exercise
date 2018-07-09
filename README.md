@@ -1,6 +1,6 @@
 # Book Search App
 
-Android app that leverages the [OpenLibrary API](https://openlibrary.org/developers/api) to search books and display cover images. This app is to be used as the base app for adding suggested extensions.
+Android app that leverages the [OpenLibrary API](https://openlibrary.org/developers/api) to search books and display cover images. This app is to be used as the base app for adding suggested extensions. This app was created during my time at my Facebook University for Engineers internship.
 
 ![Imgur](http://i.imgur.com/NJmF42Yl.png)
 
@@ -38,6 +38,3 @@ This app leverages two third-party libraries:
 
  * [Android AsyncHTTPClient](http://loopj.com/android-async-http/) - For asynchronous network requests
  * [Picasso](http://square.github.io/picasso/) - For remote image loading
-# Booksearch
-# Booksearch
-# android-booksearch-exercise
